@@ -27,10 +27,6 @@ criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-4, weight_decay=5e-4)
 scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=200)
 
-# TODO: We are doing low-pres training, but not actually
-# scaling the loss and the gradients. Add that in later.
-# This is the reference file. Do NOT use other files.
-
 
 @torch.compile
 def train_epoch(model, trainloader, criterion, optimizer, device):

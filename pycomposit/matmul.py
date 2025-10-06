@@ -13,19 +13,11 @@ __all__ = ["MATMUL", "MATMUL_LP"]
 # and returns the answer back as a normal unquantised float
 @torch.compile
 def matmul(A: torch.Tensor, B: torch.Tensor, C: torch.Tensor, scale=1/24.1):
-    A_major, A_minor = qt.quantize(A, scale=scale)
-    B_major, B_minor = qt.quantize(B, scale=scale)
-    C_major, C_minor = qt.quantize(C, scale=scale)
+    A_q = qt.snap_to_component(A)
+    B_q = qt.snap_to_component(B)
+    C_q = qt.snap_to_component(C)
 
-    R_major = (A_major @ B_major + C_major)
-    R_minor = (A_minor @ B_major) + (A_major @ B_minor + C_minor)
-    
-    # ic(A_major, A_minor)
-    # ic(B_major, B_minor)
-    # ic(C_major, C_minor)
-    # ic(R_major, R_minor)
-
-    return qt.dequantize(R_major, R_minor, scale=scale)
+    return qt.snap_to_component(A_q @ B_q + C_q)
 
 
 # @torch.compile

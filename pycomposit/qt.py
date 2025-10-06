@@ -4,7 +4,7 @@ from icecream import ic
 torch.set_printoptions(profile="full", sci_mode=False)
 torch.set_float32_matmul_precision("high")
 
-__all__ = ["round_to_quant", "quantize", "dequantize"]
+__all__ = ["round_to_quant", "quantize", "dequantize", "snap_to_component"]
 
 posit_41, _ = torch.sort(torch.tensor(
     [-16.0, -4.0, -2.0, -1.0, -0.5, -0.25, -0.0625, 0.0, 0.0625, 0.25, 0.5, 1.0, 2.0, 4.0, 16.0],
@@ -37,7 +37,12 @@ def snap_to_nearest(tensor, target):
     return target[closest_indices].reshape(tensor.shape), closest_indices
 
 
-def snap_to_component(tensor, posit_4x):
+def snap_to_component(tensor, posit_4x=None):
+    posit_4x_temp = posit_41 if posit_4x is None else posit_4x
+
+    tensor.clamp(posit_4x_temp.min(), posit_4x_temp.max())
+    tensor.clamp(posit_4x_temp.min(), posit_4x_temp.max())
+
     result, _ = snap_to_nearest(tensor, posit_4x)
 
     return result
