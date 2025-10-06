@@ -1,0 +1,8 @@
+pycomposit.egg-info
+.venv
+__pycache__
+examples/dataset/cifar10/processed.pt
+examples/dataset/cifar10/cifar-10-batches-py
+examples/dataset/cifar10/cifar-10-python.tar.gz
+*.pth
+log.txt
