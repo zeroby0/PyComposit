@@ -12,6 +12,7 @@ class QLinear(torch.nn.Module):
 
         self.scale = scale
         self.is_highprecision = True
+        self.qname = 'QLinear'
 
     @torch.compile
     def forward(self, x):
@@ -29,7 +30,7 @@ class QLinear(torch.nn.Module):
         )
 
     def __repr__(self):
-        return f"QLinear(in_features=?, out_features=?, bias={self.bias is not None}) @composit scale={self.scale:0.4f} highprecision={self.is_highprecision}"
+        return f"QLinear(in_features=?, out_features=?, bias={self.bias is not None}) @composit scale={self.scale:0.4f} highprecision={self.is_highprecision}  qname={self.qname}"
 
 
 class QConv2d(torch.nn.Module):
@@ -182,7 +183,7 @@ class QConv2d(torch.nn.Module):
         return (
             f"QConv2d({self.in_channels}, {self.out_channels}, kernel_size={self.kernel_size}, "
             f"stride={self.stride}, padding={self.padding}, dilation={self.dilation}, "
-            f"groups={self.groups}, bias={self.bias is not None}) @composit qname={self.qname}"
+            f"groups={self.groups}, bias={self.bias is not None}) @composit qname={self.qname}  qname={self.qname}"
         )
 
 
@@ -201,6 +202,7 @@ class QConv1d(torch.nn.Module):
         self.bias = torch.nn.Parameter(conv_layer.bias.clone()) if conv_layer.bias is not None else None
         self.scale = scale
         self.is_highprecision = True
+        self.qname = "QConv1d"
 
         self.stride = conv_layer.stride
         self.padding = conv_layer.padding
@@ -242,7 +244,7 @@ class QConv1d(torch.nn.Module):
         return (
             f"QConv1d(in_channels={self.in_channels}, out_channels={self.out_channels}, "
             f"kernel_size={self.kernel_size}, stride={self.stride}, padding={self.padding}, "
-            f"bias={self.bias is not None}) @composit scale={self.scale:0.4f} highprecision={self.is_highprecision}"
+            f"bias={self.bias is not None}) @composit scale={self.scale:0.4f} highprecision={self.is_highprecision}  qname={self.qname}"
         )
     
 
